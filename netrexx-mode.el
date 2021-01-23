@@ -1,11 +1,12 @@
 ;;; netrexx-mode.el --- highlight and indent Netrexx program files.
 
-;; Author Arjan Bos <Arjan.Bos@icu.nl>
+;; Author Arjan Bos <Arjan.Bos@icu.nl
+;; Update by: Pierre Rouleau <prouleau001@gmail.com>
 ;; Keywords: netrexx
 ;; Version:
-(defconst netrexx-mode-version "2.1")
+(defconst netrexx-mode-version "2.1.1")
 
-;; Since this file is the, completely rewritten, follow-up to the 
+;; Since this file is the, completely rewritten, follow-up to the
 ;; original netrexx-mode.el which was posted to gno.emacs.sources on
 ;; 18 Jun 2002, its version number is 2.0.
 
@@ -35,7 +36,7 @@
 
 ;;
 ;;
-;; Comentary: 
+;; Comentary:
 
 ;; After working for roughly a year with an adapted REXX-mode, I decided
 ;; it was time for a dedicated netrexx-mode. Particularly, the
@@ -51,7 +52,7 @@
 ;; mode-tutorial by Scott Andrew Borton ( http://two-wugs.net/scott/
 ;; ), which I found on emacs-wiki.
 ;; The idea for the command netrexx-select-current-block was taken
-;; from rexx-mode.el by Anders Lindgren / James Perrin.  
+;; from rexx-mode.el by Anders Lindgren / James Perrin.
 ;; The idea for a NetRexx pull-down menu and how to implement it was
 ;; taken straight from fortran.el.  Stefan Monier helped when I was
 ;; stuck by answering some questions on news://gnu.emacs.help
@@ -86,7 +87,7 @@
 ;;
 ;; Netrexx mode can automatically insert a little comment after the
 ;; keyword "end" indicating what it is ending. To do this, replace
-;; 'netrexx-indent-newline-indent 
+;; 'netrexx-indent-newline-indent
 ;; by
 ;; 'netrexx-indent-newline-indent-with-end-comment
 ;;
@@ -112,12 +113,12 @@
 ;; goes" for the lay-out. To get the fullest of the indentation
 ;; engine, it makes a few assumptions about the lay-out of
 ;; source-code:
-;; Statements like "if", "else", "end", "loop" and "catch" should always 
+;; Statements like "if", "else", "end", "loop" and "catch" should always
 ;; be found as the first text on a line.
 
-;; Bugs / To do: 
+;; Bugs / To do:
 ;; 1. When using continued lines in combination with
-;;    statements like "then do", the indentation is wrong. 
+;;    statements like "then do", the indentation is wrong.
 ;; 2. Other combinations of continued lines might prove to be wrong
 ;;    too.
 ;; 3. Auto-fill mode does not work. However, filling of comments with
@@ -184,7 +185,7 @@ This is used by \\[netrexx-initial-template] to re-model the
 directory-name of the current file into a package statement.
 
 It will change:
-<netrexx-package-path>com/abnamro/midms/server/ 
+<netrexx-package-path>com/abnamro/midms/server/
 
 to:
 package com.abnamro.midms.server
@@ -200,11 +201,11 @@ It will need a trailing / or \\, depending on the filesystem,
   > "do"  \n
   > _ \n
   > "end" '(netrexx-insert-end-comment)
-          '(netrexx-indent-line) 
+          '(netrexx-indent-line)
           '(netrexx-from-end-goto-matching-do))
 
 (defun netrexx-do ()
-  "Undoes unwanted site-effects from `[netrexx-do-skeleton]'" 
+  "Undoes unwanted site-effects from `[netrexx-do-skeleton]'"
   (netrexx-do-skeleton)
   (forward-line -1)
   (delete-blank-lines))
@@ -287,13 +288,13 @@ It will need a trailing / or \\, depending on the filesystem,
     "Face used to color the method calls.")
 
 ;; Level 1 - comments and strings
-(setq netrexx-font-lock-keywords-1 
+(setq netrexx-font-lock-keywords-1
       (list
        '("\\<\\(a\\(bstract\\|dapter\\)\\|b\\(inary\\|y\\)\\|c\\(ase\\|atch\\|lass\\|onstant\\)\\|d\\(ep\\(endent\\|recated\\)\\|igits\\|o\\)\\|e\\(lse\\|n\\(d\\|gineering\\)\\|x\\(it\\|tends\\)\\)\\|f\\(inal\\(\\|ly\\)\\|or\\(\\|\\(ever\\|m\\)\\)\\)\\|i\\(f\\|mp\\(lements\\|ort\\)\\|n\\(direct\\|heritable\\|terface\\)\\|terate\\)\\|l\\(abel\\|eave\\|oop\\)\\|m\\(ethod\\)\\|n\\(ative\\|op\\|umeric\\)\\|o\\(ptions\\|therwise\\|ver\\)\\|p\\(a\\(ckage\\|r\\(ent\\|se\\)\\)\\|r\\(ivate\\|o\\(perties\\|tect\\)\\)\\|ublic\\)\\|[Rr]\\(e\\(turn\\(\\|s\\)\\|set\\|xx\\)\\)\\|s\\(ay\\|cientific\\|e\\(t\\(digits\\|form\\)\\|lect\\)\\|hared\\|ignal\\(\\|s\\)\\|ourceline\\|tatic\\|uper\\)\\|t\\(h\\(en\\|is\\)\\|o\\|ra\\(ce\\|nsient\\)\\)\\|u\\(n\\(til\\|used\\)\\|pper\\)\\|v\\(olatile\\)\\|w\\(h\\(en\\|ile\\)\\)\\)\\>" 1 font-lock-keyword-face nil)
        '("\\.\\(a\\(b\\(brev\\|s\\)\\|ddlib\\)\\|b\\(2x\\)\\|c\\(2\\(d\\|x\\)\\|ent\\(re\\|er\\)\\|ha\\(ngestr\\|rat\\)\\|lose\\|o\\(mpare\\|p\\(ies\\|yindexed\\)\\|untstr\\)\\)\\|d\\(2\\(c\\|x\\)\\|at\\(atype\\|e\\)\\|el\\(str\\|word\\)\\)\\|e\\(quals\\|xists\\)\\|f\\(orm\\(at\\|word\\)\\)\\|h\\(ashcode\\)\\|i\\(nsert\\)\\|l\\(astpos\\|e\\(ft\\|ngth\\)\\|ower\\)\\|m\\(ax\\|in\\)\\|o\\(p\\(a\\(dd\\|nd\\)\\|cc\\|ccblank\\|div\\|divl\\|eq\\|eqs\\|gt\\|gt\\(eq\\|eqs\\|s\\)\\|lt\\|lt\\(eq\\|eqs\\|s\\)\\|m\\(inus\\|ult\\)\\|not\\|not\\(eq\\|eqs\\)\\|or\\|p\\(lus\\|ow\\)\\|rem\\|sub\\|xor\\)verlay\\)\\|p\\(os\\)\\|r\\(everse\\|ight\\)\\|s\\(equence\\|ign\\|pace\\|trip\\|ub\\(str\\|word\\)\\)\\|t\\(o\\(b\\(oolean\\|yte\\)\\|char\\|chararray\\|double\\|float\\|int\\|long\\|short\\|string\\)\\|r\\(anslate\\|unc\\)\\)\\|u\\(pper\\)\\|v\\(erify\\)\\|w\\(ord\\(\\|index\\|lengh\\|pos\\|s\\)\\|rite\\(ch\\|ln\\)\\)\\|x\\(2\\(b\\|c\\|d\\)\\)\\)\\>" 1 font-lock-netrexx-method-face nil)
     '( "\\.\\([a-zA-Z0-9_]+\\)(" 1 font-lock-method-face nil)
     ))
-  
+
 ;; Level 3 -  ports
 (setq netrexx-font-lock-keywords-3
       (append
@@ -321,7 +322,7 @@ It will need a trailing / or \\, depending on the filesystem,
 	;; user function names
 	(list
 	 "method \\(\\<.*\\>\\)(" '(1 font-lock-function-name-face nil))
-	;; options statement (note: the binary and the trace keyword clash with the ones 
+	;; options statement (note: the binary and the trace keyword clash with the ones
 	;; in the first list, which is needed for the class keyword.
 	(list
 	 (concat
@@ -433,7 +434,7 @@ The following rules apply:
     (beginning-of-line)
     (cond ((bobp)
 	   (indent-line-to 0))
-	  ((looking-at "^[ \t]*class\\([ \t]\\|$\\)+") ; check for rule 2 
+	  ((looking-at "^[ \t]*class\\([ \t]\\|$\\)+") ; check for rule 2
 	   (if (looking-at "^[ \t]*class .*? dependent") ;check for rule 3
 	       (indent-line-to netrexx-indent-amount)
 	     (indent-line-to 0)))
@@ -441,7 +442,7 @@ The following rules apply:
 	   (indent-line-to netrexx-indent-amount))
 	  ((looking-at "^[ \t]*/\\*\\*") ; javadoc check for rule 15
 	   (if (save-excursion
-		 (< (save-excursion 
+		 (< (save-excursion
 		      (let ((method-point (re-search-forward "^[ \t]*method\\b" nil t 1)))
 			(if method-point
 			    method-point
@@ -456,7 +457,7 @@ The following rules apply:
 	       (if (looking-at "^[ \t]*class .*? dependent")
 		   (indent-line-to netrexx-indent-amount)
 		 (indent-line-to 0))))
-	  (t 
+	  (t
 	   (let ((not-indented t) cur-indent)
 	     ;; check for rule 5
 	     ;; when commands should be aligned underneath each other and
@@ -467,7 +468,7 @@ The following rules apply:
 		 (let ((still-looking t))
 		   (while still-looking
 		     (forward-line -1)
-		     (when (netrexx-looking-at-end-p) 
+		     (when (netrexx-looking-at-end-p)
 		       (netrexx-from-end-goto-matching-do))
 		     (cond ((looking-at "^[ \t]*when\\b")
 			   (setq still-looking nil
@@ -477,9 +478,9 @@ The following rules apply:
 			    (setq still-looking nil
 				  not-indented nil
 				  cur-indent (+ (current-indentation) netrexx-indent-amount))))))))
-	     
+
 	     ;; check for rule 6
-	     ;; else should be aligned to the correct if, taking nested ifs 
+	     ;; else should be aligned to the correct if, taking nested ifs
 	     ;; into account.
 	     (when (and not-indented
 		      (netrexx-looking-at-else-p))
@@ -490,9 +491,9 @@ The following rules apply:
 		     (message "Dangling else!")
 		     (setq cur-indent 0))
 		   (setq not-indented nil)))
-	     
+
 	     ;; check for rule 7
-	     ;; catch and finally should be aligned to their own do, 
+	     ;; catch and finally should be aligned to their own do,
 	     ;; taking nesting into account
 	     (when (and not-indented
 			(looking-at "^[ \t]*\\(catch\\|finally\\)\\b"))
@@ -513,20 +514,20 @@ The following rules apply:
 		     (when (netrexx-looking-at-end-p)
 		       (netrexx-from-end-goto-matching-do))
 		     ))))
-	     
+
 	     (when (and not-indented  ; check for rule 8
 			(netrexx-looking-at-end-p))
-	       ;; find the matching do, select, loop or catch. It should 
+	       ;; find the matching do, select, loop or catch. It should
 	       ;; take nested do / end pairs into account.
 	       (save-excursion
 		 (setq not-indented nil
 		       cur-indent (if (netrexx-from-end-goto-matching-do)
 				      (current-indentation)
 				    0))))
-	     
+
 	     ;; check for rule 9
 	     ;; check to see if we are within a comment
-	     (when (and not-indented 
+	     (when (and not-indented
 			(netrexx-looking-at-comment-p))
 	       (save-excursion
 		 ;; check to see if we're looking at a single line, or
@@ -560,14 +561,14 @@ The following rules apply:
 			 (if (looking-at "^[ \t]*\\*") ; looking at *
 			     (setq extra-indent 1)
 			   (setq extra-indent 3))
-			   
+
 			 (while (not (or (looking-at "^[ \t]*/\\*")
 					 (bobp)))
 			   (forward-line -1))
 			   (when (looking-at "^[ \t]*/\\*")
 			     (setq cur-indent (+ (current-indentation ) extra-indent)
 				   not-indented nil)))))))
-	     
+
 	     (when not-indented ; check for rule 10
 	       (save-excursion
 		 (forward-line -1)
@@ -575,7 +576,7 @@ The following rules apply:
 			     (or (netrexx-looking-at-comment-p)
 				 (save-excursion
 				   (forward-line -1)
-				   (netrexx-looking-at-continuation-p)))) 
+				   (netrexx-looking-at-continuation-p))))
 		   (forward-line -1))
 		 (when (and (not (looking-at "^[ \t].*\\(--\\|/\\*\\)[ \t]*\\(else\\|then\\)"))
 			    (or (looking-at "^[ \t]*\\(.*\\)?\\bthen\\( do\\|[ \t]*\\(--.*\\|/\\*.*\\)?$\\)")
@@ -624,7 +625,7 @@ The following rules apply:
 			  (while (looking-at "[ \t]")
 			    (forward-char 1))
 			  (setq cur-indent (current-column)))
-			 ((progn 
+			 ((progn
 			    (goto-char beg)
 			    (re-search-forward "\"" end t 1))
 			  (setq cur-indent (- (current-column) 1)))
@@ -633,7 +634,7 @@ The following rules apply:
 	       (setq not-indented nil))
 
 	     (if not-indented ;check for rule 12 and 13
-		 (progn 
+		 (progn
 		   (save-excursion
 		     (forward-line -1)
 		     (while (not (or (netrexx-looking-at-end-p)
@@ -679,36 +680,36 @@ The following rules apply:
 				(while (netrexx-previous-line-else-or-then-p))
 				(setq cur-indent (current-indentation)
 				      not-indented nil))
-			       
+
 			       ((and (looking-at "^[ \t]*.*?then\\b")
 				     (not (looking-at "^[ \t]*.*?then\\b.+$")))
 				(while (netrexx-previous-line-else-or-then-p))
 				;; indentation
 				(forward-line -1)
-				(while (looking-at "^[ \t]*.*[^-]-[ \t]*$") 
+				(while (looking-at "^[ \t]*.*[^-]-[ \t]*$")
 				  (forward-line -1))
 				(forward-line 1)
-				(if (looking-at "^[ \t]*\\(if\\|when\\).*[^-]-[ \t]*$") 
+				(if (looking-at "^[ \t]*\\(if\\|when\\).*[^-]-[ \t]*$")
 				  (setq cur-indent (+ (current-indentation) netrexx-indent-amount)
 					not-indented nil)
 				  ;; else
-				  (setq cur-indent (current-indentation) 
+				  (setq cur-indent (current-indentation)
 				      not-indented nil) ))))))))
-	     
+
 	     (when not-indented ; check for rule 14
 	       (save-excursion
 		 (forward-line -1)
 		 (setq cur-indent (current-indentation))))
-	     
+
 	     (when (< cur-indent 0)
 	       (setq cur-indent 0))
 	     (indent-line-to cur-indent)
 	     )))
     (when (> (- (point-max) pos) (point))
       (goto-char (- (point-max) pos)))))
-  
+
 (defun netrexx-inside-comment-p ()
-  "Checks if the point is inside a comment.  
+  "Checks if the point is inside a comment.
 It returns true if the point is inside it, else it returns nil."
   (let ((origpoint (point))
 	state)
@@ -724,7 +725,7 @@ It returns the state from parse-partial-sexp for the search that
 terminated on the points position"
   (let ((origpoint (point))
 	state)
-    (save-excursion 
+    (save-excursion
       (goto-char 1)
       (while (> origpoint (point))
 	(setq state (parse-partial-sexp (point) origpoint 0))))
@@ -737,19 +738,19 @@ It returns the state from parse-partial-sexp for the search that
 terminated on the points position"
   (let ((origpoint (point))
 	state)
-    (save-excursion 
+    (save-excursion
       (goto-char 1)
       (while (> origpoint (point))
 	(setq state (parse-partial-sexp (point) origpoint 0))))
 	(nth 3 state)))
 
 (defun netrexx-inside-javadoc-p ()
-  "Checks if the point is inside a javadoc style comment.  
+  "Checks if the point is inside a javadoc style comment.
 It returns true if the point is inside it, otherwise it returns
 nil."
   (let ((retval (netrexx-looking-at-comment-p)))
     (when retval ;; now check to see if we are within a javadoc style
-		 ;; comment.  
+		 ;; comment.
       ;; first we need to check if we are within
       ;; a multi-line comment
       (save-excursion
@@ -775,7 +776,7 @@ nil."
 	  (setq retval (or (looking-at "^[ \t]*--")
 			   (looking-at "^[ \t]*/\\*"))))
     retval)))
-    
+
 (defun netrexx-indent-newline-indent ()
   "Indents the current line before doing a regular newline-and-indent.
 If point is at the end of the line, or at the beginning of an
@@ -879,7 +880,7 @@ moved."
  		 (save-excursion
 		   (forward-line -1)
 		   (looking-at "^[ \t]*.*[^-]-[ \t]*$")))
-	(forward-line -1)) 
+	(forward-line -1))
       (setq retval (or (netrexx-looking-at-else-or-then-p)
 		       (looking-at "^[ \t]*\\(if\\|when\\)[ \t]+"))
 	    cur-point (point)))
@@ -967,7 +968,7 @@ point to the line that contains the corresponding \"if\". It
 returns t if it finds such a statement. If it encounters the
 begin of the buffer, it will return nil and the cursor will be
 there, at the beginning of the buffer."
-  (let ((still-looking t) 
+  (let ((still-looking t)
 	(else-count (if (looking-at "^[ \t]*else\\b") 1 0))
 	(retval nil))
     (while still-looking
@@ -994,7 +995,7 @@ there, at the beginning of the buffer."
   "Returns the first word it encounters."
   (let ((beg) (end) (retval))
     ;; move to the beginning of the word
-    (forward-word 1) 
+    (forward-word 1)
     (backward-word 1)
     ;; determine the word boundries
     (setq beg (point))
@@ -1074,10 +1075,10 @@ that shows which \"do\", \"loop\" or \"select\" it matches."
 
 See also \\[netrexx-insert-end-comment]."
   (interactive "*r")
-  (when (> beg end) 
-    (let (mid) 
-      (setq mid beg 
-	    beg end 
+  (when (> beg end)
+    (let (mid)
+      (setq mid beg
+	    beg end
 	    end mid)))
   (goto-char beg)
   (beginning-of-line)
@@ -1095,10 +1096,10 @@ lines are indented with \\[netrexx-indent-line].
 All blank lines between a multi-line comment and a method are
 removed."
   (interactive "r")
-  (when (> beg end) 
-    (let (mid) 
-      (setq mid beg 
-	    beg end 
+  (when (> beg end)
+    (let (mid)
+      (setq mid beg
+	    beg end
 	    end mid)))
   ;; need to convert e into a marker so that it moves
   ;; with buffer changes
@@ -1107,7 +1108,7 @@ removed."
   ;; now convert the region
   (goto-char beg)
   (beginning-of-line)
-  (while (and (< (point) end) 
+  (while (and (< (point) end)
 	     (not (eobp)))
     (when (looking-at "[ \t]*$")
       (save-excursion
@@ -1134,7 +1135,7 @@ removed."
 	  (insert "-- "))))
     (when (or (netrexx-looking-at-method-p)
 	      (looking-at "^[ \t]*class\\b"))
-      ;; see if there is a blank line above separating a multi-line comment 
+      ;; see if there is a blank line above separating a multi-line comment
       ;; and the current line.
       (save-excursion
 	(when (and (save-excursion
@@ -1147,7 +1148,7 @@ removed."
 		     (or (netrexx-inside-comment-p)
 			 (looking-at "^[ \t]*/\\*"))))
 	  (delete-blank-lines))))
-    (netrexx-indent-line)    
+    (netrexx-indent-line)
     (forward-line 1)
     )
   (delete-trailing-whitespace))
@@ -1180,7 +1181,7 @@ removed."
 	(message "End of buffer...")
 	(setq netrexx-boundry-hit t))))
   (setq last-command 'netrexx-next-method))
-  
+
 (defun netrexx-previous-method ()
   "Jumps to the previous method definition."
   (interactive)
@@ -1207,7 +1208,7 @@ removed."
   (setq last-command 'netrexx-previous-method))
 
 (defun netrexx-beginning-of-method (&optional arg)
-  "Jumps to the beginning of the method.  
+  "Jumps to the beginning of the method.
 ARG repeats the search ARG times. It always returns t, unless no
 method is found."
   (interactive "p")
@@ -1306,7 +1307,7 @@ When even that fails, it will return nil. "
 		(progn ;; now select all until next method. This
 		  ;; includes all comments belonging to that method,
 		  ;; written directly above the method.
-		  (beginning-of-line) 
+		  (beginning-of-line)
 		  (forward-line -1)
 		  (while (netrexx-looking-at-comment-p)
 		    (forward-line -1))
@@ -1321,7 +1322,7 @@ When even that fails, it will return nil. "
 		      ;; inclusive. Also do not select the comments
 		      ;; that are direct before the method definition.
 		      (progn
-			(beginning-of-line) 
+			(beginning-of-line)
 			(forward-line -1)
 			(while (netrexx-looking-at-comment-p)
 			  (forward-line -1))
@@ -1331,7 +1332,7 @@ When even that fails, it will return nil. "
 		  (setq retval t))
 	      (setq retval nil))))
       ;; warn that something went awry
-      (if (not retval) 
+      (if (not retval)
 	  (progn
 	    (netrexx-beep)
 	    ;; 	  (set-mark-command nil)
@@ -1356,7 +1357,7 @@ delimiter.
   (save-excursion
     (cond ((netrexx-inside-javadoc-p)
 	   (netrexx-fill-comments))
-	  ((save-excursion 
+	  ((save-excursion
 	     (beginning-of-line)
 	     (looking-at "^[ \t]*.*--")) ;; this is done before the
 				         ;; normal comments because of
@@ -1374,6 +1375,15 @@ delimiter.
   ;; done above, it isn't done at all, and it's therefore effectively
   ;; disabled in normal code.
   t)
+
+(defun netrexx--replace-regexp (regexp to-string start end)
+  "Replace REGEXP by TO-STRING in the region delimited by START to END.
+
+A specialized replacement of `replace-regexp' that does not generate
+byte-compilation warnings."
+  (goto-char start)
+  (when (re-search-forward regexp end :noerror nil)
+    (replace-match to-string)))
 
 (defun netrexx-fill-comments ()
   "called from `netrexx-fill-paragraph-function' to fill comments"
@@ -1410,7 +1420,7 @@ delimiter.
     (goto-char end)
     (insert "\n")
     ;; strip the leading *, if any
-    (replace-regexp "^[ \t]*\\*" " " nil beg end)
+    (netrexx--replace-regexp "^[ \t]*\\*" " " beg end)
     ;; now join the lines together in one big line
     (goto-char beg)
     (forward-line 1)
@@ -1492,7 +1502,7 @@ Called from \\[netrexx-fill-paragraph]."
     (end-of-line)
     (insert "\n")
     ;; remove all superfluous -- characters
-    (replace-regexp "^[ \t]*--" " " nil (+ beg 2) end)
+    (netrexx--replace-regexp "^[ \t]*--" " " (+ beg 2) end)
     ;; now join all lines together into one big line
     (goto-char beg)
 ;;     (when (bolp)
@@ -1530,7 +1540,7 @@ Called from \\[netrexx-fill-paragraph]."
 ))
 
 (defun netrexx-fill-method ()
-  "Divides method parameters with continuation characters . 
+  "Divides method parameters with continuation characters .
 
 When the method definition goes beyond `fill-column' and the
 method statement has parts that can be continued on the next
@@ -1540,12 +1550,12 @@ the `fill-column' border.
 Parts that can be continued on the next line are:
 - Parameters, separated by comma's
 - returns statement
-- signals statement 
+- signals statement
 - signals list, separated by comma's"
   (interactive)
   (when (netrexx-looking-at-method-p)
     ;; we have to see if we can split the line.
-    ;; It must not be continued already 
+    ;; It must not be continued already
     ;; It must contain text at the fill-column
     (when (and (not (looking-at "[^-]-[ \t]*$"))
 	       (eq (move-to-column fill-column) fill-column))
@@ -1611,7 +1621,7 @@ line."
 	      (setq still-looking nil))))
       ;; else
       (message "Expected \"signals\"-statement, but none found when filling"))))
-		      
+
 (defun netrexx-fill-method-returns ()
   "Fills out the returns clause of a method. Called from
 \\[netrexx-fill-method]."
@@ -1633,7 +1643,7 @@ the second one uses ' as a delimiter. "
     (while (netrexx-inside-string-p)
       (forward-char -1))
     ;; determine the string delimiter
-    (let ((string-delim 
+    (let ((string-delim
 	   (buffer-substring-no-properties (point) (+ (point) 1))))
       (setq beg (point))
     ;; find the end
@@ -1662,7 +1672,7 @@ the second one uses ' as a delimiter. "
 (defun netrexx-initial-template ()
   "Inserts default package, javadoc and class statements in a new file.
 
-The classpath to the root of the package is stored in 
+The classpath to the root of the package is stored in
 `netrexx-package-path'
 It also generates a default constructor statement without any
 arguments. "
@@ -1670,15 +1680,15 @@ arguments. "
   (let (beg end class-name)
     (goto-char (point-min))
     (insert "package " (buffer-file-name))
-    (replace-regexp netrexx-package-path "" nil (point-min) (point-max))
+    (netrexx--replace-regexp netrexx-package-path "" (point-min) (point-max))
     (save-excursion
-      (replace-regexp "/" "." nil (point-min) (point-max)))
+      (netrexx--replace-regexp "/" "." (point-min) (point-max)))
     ;; remove the last "."
     (end-of-line)
     (backward-word 2)
     (delete-char -1)
     (insert "\n\n")
-    ;; save the class name 
+    ;; save the class name
     (setq class-name (netrexx-return-word))
     ;; remove the current line containing the file name
     (delete-region (progn
@@ -1712,7 +1722,7 @@ arguments. "
   "Inserts an appropriate javadoc statement for the method.
 
 The javadoc based on:
-- the name of the method, 
+- the name of the method,
 - the name and type of the parameters,
 - the return type of the method."
   (interactive)
@@ -1720,7 +1730,7 @@ The javadoc based on:
     (beginning-of-line)
     (save-excursion
       (when (and (netrexx-looking-at-method-p)
-		 (save-excursion 
+		 (save-excursion
 		   (forward-line -1)
 		   (not (netrexx-inside-javadoc-p))))
 	(insert "/**\n")
@@ -1736,7 +1746,7 @@ The javadoc based on:
 	(re-search-forward "^[ \t]*method[ \t]+" nil t 1)
 	(let ((param-count 1)
 	      (beg (point))
-	      (end (progn 
+	      (end (progn
 		     (end-of-line)
 		     (point))))
 	  (goto-char beg)
@@ -1799,7 +1809,7 @@ The javadoc based on:
 ;; 			(setq end (re-search-forward ")" nil t 1)))
 ;; 		      )
 		    )))))
-	  
+
 	  ;; next, insert the @return javadoc tag, if needed
 ;; 	  (save-excursion
 ;; 	    (setq end (progn (forward-line 1) (end-of-line) (point))))
@@ -1812,7 +1822,7 @@ The javadoc based on:
 	  )))
     ;; indent the new stuff
     (let ((beg (point))
-	  (end (progn 
+	  (end (progn
 		 (re-search-forward "^[ \t]*method\\b" nil t 1)
 		 (point))))
       (indent-region beg end nil))))
@@ -1875,7 +1885,7 @@ BUFFER is the buffer speedbar is requesting buttons for."
 	   (netrexx-loop))
 	  (t nil))))
 
-(defvar netrexx-mode-syntax-table 
+(defvar netrexx-mode-syntax-table
   (let ((st (make-syntax-table)))
     (modify-syntax-entry ?. "." st)
     (modify-syntax-entry ?- ". 12b" st)
@@ -1934,8 +1944,8 @@ netrexx-mode-hook with no args, if that value is non-nil.
 ;;			(local-set-key `\\C-m' 'netrexx-indent-newline-indent)
 ;;			))
 
-Two extra keymappings are defined: 
-C-c C-n maps to M-x `netrexx-next-method' and 
+Two extra keymappings are defined:
+C-c C-n maps to M-x `netrexx-next-method' and
 C-c C-p maps to M-x `netrexx-previous-method'.
 
 For convenience it is possible to map
