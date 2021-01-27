@@ -36,7 +36,7 @@
 
 ;;
 ;;
-;; Comentary:
+;; Commentary:
 
 ;; After working for roughly a year with an adapted REXX-mode, I decided
 ;; it was time for a dedicated netrexx-mode. Particularly, the
@@ -62,7 +62,7 @@
 ;;	This file contains code for a GNU Emacs major mode for
 ;;	editing NETREXX program files.
 ;;
-;;     Type C-h m in Emacs for information on how to configurate
+;;      Type C-h m in Emacs for information on how to configurate
 ;;	the netrexx-mode.
 ;;
 ;;	Put the following lines into your .emacs and rexx-mode will be
@@ -91,7 +91,7 @@
 ;; by
 ;; 'netrexx-indent-newline-indent-with-end-comment
 ;;
-;; Functions that should make live a bit easier:
+;; Functions that should make life a bit easier:
 ;;
 ;; M-x netrexx-sanitize-region
 ;;   To make sure that there are no unintentional "trace results" or
@@ -136,6 +136,12 @@
 ;;
 ;;     06-04-04 V2.1 AB         Added skeletons, some minor bug fixes in the
 ;;                              indentation code.
+;;     21-01-26 V2.1.1 PRouleau Fixed customization: the definition of
+;;                              netrexx-imenu-generic-expression prevented
+;;                              user modification via customization. Its value is
+;;                              now created out of 2 new defcustom variables:
+;;                              netrexx-regexp-for-class and netrexx-regexp-for-method.
+;;                              netrexx-imenu-generic-expression is now defconst.
 
 ;; Code:
 
@@ -1858,13 +1864,19 @@ The javadoc based on:
 ;; ------------ speedbar additions ------------
 (require 'speedbar)
 
-(defcustom netrexx-imenu-generic-expression
+(defcustom netrexx-regexp-for-class
+  "^[ \t]*class \\([a-zA-Z0-9_]*\\)"
+  "Regexp used to detect NetRexx class definitions.")
+
+(defcustom netrexx-regexp-for-method
+  "^[ \t]*method \\([a-zA-Z0-9_]*\\)"
+  "Regexp used to detect NetRexx method definitions.")
+
+(defconst netrexx-imenu-generic-expression
   (list
-   '("method" "^[ \t]*method \\([a-zA-Z0-9_]*\\)" 1)
-   '("class" "^[ \t]*class \\([a-zA-Z0-9_]*\\)" 1))
-  "Value for `imenu-generic-expression' in NetRexx mode."
-  :type 'regexp
-  :group 'netrexx)
+   (list "method" netrexx-regexp-for-method  1)
+   (list "class"  netrexx-regexp-for-class   1))
+  "Value for `imenu-generic-expression' in NetRexx mode.")
 
 ;; (eval-when-compile (require 'speedbar))
 (speedbar-add-supported-extension ".nr[xy]")
