@@ -1866,11 +1866,15 @@ The javadoc based on:
 
 (defcustom netrexx-regexp-for-class
   "^[ \t]*class \\([a-zA-Z0-9_]*\\)"
-  "Regexp used to detect NetRexx class definitions.")
+  "Regexp used to detect NetRexx class definitions."
+  :group 'netrexx
+  :type 'string)
 
 (defcustom netrexx-regexp-for-method
   "^[ \t]*method \\([a-zA-Z0-9_]*\\)"
-  "Regexp used to detect NetRexx method definitions.")
+  "Regexp used to detect NetRexx method definitions."
+  :group 'netrexx
+  :type  'string)
 
 (defconst netrexx-imenu-generic-expression
   (list
